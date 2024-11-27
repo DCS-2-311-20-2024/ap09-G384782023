@@ -1,6 +1,6 @@
 //
 // 応用プログラミング 第9,10回 自由課題 (ap0901.js)
-// G38400-2023 拓殖太郎
+// G38478-2023 平賀優維斗
 //
 "use strict"; // 厳格モード
 
@@ -26,6 +26,44 @@ function init() {
   const axes = new THREE.AxesHelper(18);
   scene.add(axes);
 
+  //カード
+  const cards = new THREE.Group();
+  function makecards(){
+    const h = 0.1;
+    const d = 2;
+    const w = 1;
+    const gapX = 0.5;
+    const gapZ = 0.3;
+
+    //カードを並べる
+    const card = new card(40);
+    for(let i = 0;i<5;i++){
+      for(let j=0;j<8;j++){
+        card[i*8+j] = new THREE.Mesh(
+          new THREE.BoxGeometry(w,h,d),
+          new THREE.MeshLambertMaterial()
+          
+        );
+        card.position.set(
+          (w + gapX)*(j-8/2),
+          0,
+          -(d + gapZ) * i
+        )
+        cards.add(card);
+      }
+    }
+    scene.add (cards);
+
+  }
+  makecards();
+
+
+
+
+
+
+
+
   // カメラの作成
   const camera = new THREE.PerspectiveCamera(
     50, window.innerWidth/window.innerHeight, 0.1, 1000);
@@ -35,6 +73,7 @@ function init() {
   // レンダラの設定
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, innerHeight);
+  renderer.setClearColor(0x305070);
     document.getElementById("output").appendChild(renderer.domElement);
 
   // 描画処理
